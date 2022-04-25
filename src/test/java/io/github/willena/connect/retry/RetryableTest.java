@@ -19,7 +19,7 @@ class RetryableTest {
         Retryable.Builder builder = Retryable.builder();
         builder.withMaxRetries(1);
         builder.withMaxRetryTimeout(Duration.of(1, ChronoUnit.MINUTES));
-        builder.withBackoffPolicy(BackoffTimers.noBackoff());
+        builder.withBackoffTimer(BackoffTimers.noBackoff());
         builder.when(Condition.never());
         Retryable r = builder.build();
 
@@ -34,7 +34,7 @@ class RetryableTest {
         Retryable.Builder builder = Retryable.builder();
         builder.withMaxRetries(2);
         builder.withMaxRetryTimeout(Duration.of(1, ChronoUnit.MINUTES));
-        builder.withBackoffPolicy(BackoffTimers.noBackoff());
+        builder.withBackoffTimer(BackoffTimers.noBackoff());
         builder.when(Condition.always());
         Retryable r = builder.build();
 
@@ -53,7 +53,7 @@ class RetryableTest {
         Retryable.Builder builder = Retryable.builder();
         builder.withMaxRetries(100);
         builder.withMaxRetryTimeout(Duration.of(1, ChronoUnit.MILLIS));
-        builder.withBackoffPolicy(BackoffTimers.noBackoff());
+        builder.withBackoffTimer(BackoffTimers.noBackoff());
         builder.when(Condition.always());
         Retryable r = builder.build();
 
@@ -72,7 +72,7 @@ class RetryableTest {
         Retryable.Builder builder = Retryable.builder();
         builder.withMaxRetries(100);
         builder.withMaxRetryTimeout(Duration.of(1, ChronoUnit.MILLIS));
-        builder.withBackoffPolicy(BackoffTimers.noBackoff());
+        builder.withBackoffTimer(BackoffTimers.noBackoff());
         builder.when(Condition.never());
         Retryable r = builder.build();
 
@@ -90,7 +90,7 @@ class RetryableTest {
         Retryable.Builder builder = Retryable.builder();
         builder.withMaxRetries(100);
         builder.withMaxRetryTimeout(Duration.of(1, ChronoUnit.MILLIS));
-        builder.withBackoffPolicy(BackoffTimers.noBackoff());
+        builder.withBackoffTimer(BackoffTimers.noBackoff());
         builder.when(Condition.always());
         Retryable r = builder.build();
 
