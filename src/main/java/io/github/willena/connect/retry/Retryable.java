@@ -1,8 +1,11 @@
 package io.github.willena.connect.retry;
 
+import io.github.willena.connect.backoff.BackoffInterruptedException;
 import io.github.willena.connect.backoff.BackoffTimer;
 import io.github.willena.connect.backoff.BackoffTimers;
+import io.github.willena.connect.counter.RetryCountExceeded;
 import io.github.willena.connect.counter.RetryCounter;
+import io.github.willena.connect.counter.RetryTimeoutExceeded;
 import org.apache.kafka.common.utils.Time;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.slf4j.Logger;
@@ -63,11 +66,11 @@ public class Retryable {
         return this.errorCondition;
     }
 
-    public <T> T call(String description, Callable<T> function) {
+    public <T> T call(String description, Callable<T> function) throws RetryCountExceeded, BackoffInterruptedException, RetryTimeoutExceeded {
         return callWith(description, () -> null, nullResource -> function.call());
     }
 
-    public <ResourceT extends AutoCloseable, T> T callWith(String description, ResourceSupplier<ResourceT> resourceSupplier, FunctionWithResource<ResourceT, T> function) {
+    public <ResourceT extends AutoCloseable, T> T callWith(String description, ResourceSupplier<ResourceT> resourceSupplier, FunctionWithResource<ResourceT, T> function) throws RetryCountExceeded, BackoffInterruptedException, RetryTimeoutExceeded {
         Exception lastException;
         try (RetryCounter retryCounter = newRetryCounter()) {
             while (true) {
@@ -144,7 +147,7 @@ public class Retryable {
             return this;
         }
 
-        public Builder withBackoffPolicy(BackoffTimer backoffTimer) {
+        public Builder withBackoffTimer(BackoffTimer backoffTimer) {
             this.backoffPolicy = Optional.ofNullable(backoffTimer);
             return this;
         }

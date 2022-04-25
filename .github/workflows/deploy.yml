@@ -1,0 +1,50 @@
+name: build
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*.*.*'
+    branches:
+      - master
+      - main
+
+jobs:
+  build_natives:
+    permissions:
+      contents: write
+    name: Build deploy
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 16
+          java-package: jdk
+          cache: 'maven'
+
+      - name: Build, test and package
+        run: mvn clean compile test package
+
+      - name: Prepare GPG sign
+        run: |
+          echo "${{ secrets.PRIVATE_KEY_ENC }}" | base64 -d | openssl aes-256-cbc -K ${{ secrets.ENCRYPTED_KEY }} -iv ${{ secrets.ENCRYPTED_IV }} -out /tmp/private.key -d
+          gpg --version
+          gpg --batch --import /tmp/private.key
+          rm /tmp/private.key
+
+      - name: Deploy version
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: mvn clean package deploy --settings settings.xml
+
+      - name: Deploy Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: "connect-retryable-${{github.ref_name}}"
+          generate_release_notes: true
+          files: |
+            ./target/*.jar
