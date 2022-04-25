@@ -1,3 +1,5 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.willena/connect-retryable/badge.svg)](https://search.maven.org/artifact/io.github.willena/connect-retryable/)
+
 # Connect Retryable
 
 A simple library to handle multiple retries in case of Exceptions in Kafka Connectors (Sink)
@@ -6,9 +8,9 @@ It provides:
 
 - Retry Count
 - Retry with backoff
-    - Constant
-    - Exponential
-    - No backoff
+  - Constant
+  - Exponential
+  - No backoff
 - Retry timeout
 
 ## Simple Example

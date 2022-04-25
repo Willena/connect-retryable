@@ -38,7 +38,7 @@ jobs:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-        run: mvn clean package deploy --settings settings.xml
+        run: mvn clean package deploy -DperformRelease=true --settings settings.xml
 
       - name: Deploy Release
         uses: softprops/action-gh-release@v1
@@ -48,3 +48,6 @@ jobs:
           generate_release_notes: true
           files: |
             ./target/*.jar
+            ./target/*.asc
+            ./target/*.md5
+            ./target/*.sha1
