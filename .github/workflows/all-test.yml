@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+    paths:
+      - '**.java'
+      - '**.xml'
+      - '.github/workflows/*.yml'
+      - 'pom.xml'
+  push:
+    branches:
+      - '**'
+    paths:
+      - '**.java'
+      - '**.xml'
+      - 'pom.xml'
+
+jobs:
+  test:
+    name: test ${{ matrix.os }} jdk${{ matrix.java }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        java: [ 8, 11, 16 ]
+        exclude:
+          - os: windows-latest
+            java: 11
+          - os: windows-latest
+            java: 8
+          - os: macos-latest
+            java: 11
+          - os: macos-latest
+            java: 8
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          java-package: jdk
+          cache: 'maven'
+
+      - name: Test
+        run: mvn test
