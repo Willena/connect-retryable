@@ -24,7 +24,7 @@ jobs:
           cache: 'maven'
 
       - name: Build, test and package
-        run: mvn clean compile test package
+        run: mvn clean package
 
       - name: Prepare GPG sign
         run: |
