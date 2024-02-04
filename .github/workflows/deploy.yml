@@ -23,8 +23,8 @@ jobs:
           java-package: jdk
           cache: 'maven'
 
-      - name: Build, test and package
-        run: mvn clean package
+      - name: Build, test, package and install
+        run: mvn clean install
 
       - name: Prepare GPG sign
         run: |
