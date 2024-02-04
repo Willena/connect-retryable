@@ -6,7 +6,7 @@
 
     <groupId>io.github.willena</groupId>
     <artifactId>connect-retryable</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <name>Connect Retryable</name>
     <description>Library that provides retry functionality for kafka connect sink connectors</description>
@@ -81,8 +81,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
-
-
         </plugins>
 
         <pluginManagement>
