@@ -33,20 +33,6 @@
         </developer>
     </developers>
 
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <name>Nexus Release Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
     <scm>
         <connection>scm:git:git@github.com:Willena/connect-retryable.git</connection>
         <developerConnection>scm:git:git@github.com:Willena/connect-retryable.git</developerConnection>
@@ -80,6 +66,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
             </plugin>
         </plugins>
 
@@ -115,9 +105,15 @@
                     <version>3.5.3</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.4</version>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.8.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <publishingServerId>central</publishingServerId>
+                        <autoPublish>true</autoPublish>
+                        <waitUntil>published</waitUntil>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -168,18 +164,6 @@
                                         <arg>loopback</arg>
                                     </gpgArguments>
                                 </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>default-deploy</id>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>deploy</goal>
-                                </goals>
                             </execution>
                         </executions>
                     </plugin>
