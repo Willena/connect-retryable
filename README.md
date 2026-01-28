@@ -1,5 +1,9 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.willena/connect-retryable/badge.svg)](https://search.maven.org/artifact/io.github.willena/connect-retryable/)
 
+# Deprecated / Archived
+
+Use something like resilience4j (https://github.com/resilience4j/resilience4j) instead. 
+
 # Connect Retryable
 
 A simple library to handle multiple retries in case of Exceptions in Kafka Connectors (Sink)
